@@ -1,5 +1,7 @@
 package com.fan.share.service.user.impl;
 
+import com.baomidou.mybatisplus.core.conditions.AbstractWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.fan.share.dao.UserDao;
 import com.fan.share.dto.UserDTO;
 import com.fan.share.entity.User;
@@ -7,6 +9,7 @@ import com.fan.share.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**用户业务功能实现类
@@ -22,7 +25,11 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public List<User> users() {
-        return userDao.selectList( null);
+        try{
+            return userDao.selectList( null);
+        }catch (Exception e){
+            return null;
+        }
     }
 
     @Override
@@ -52,7 +59,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public int delete(int id) {
+    public int delete(long id) {
         try{
             userDao.deleteById(id);
             return 1;
@@ -60,5 +67,31 @@ public class UserServiceImpl implements IUserService {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    @Override
+    public int update(long id, UserDTO userDTO) {
+        try{
+            User user = userDTO.toUser();
+            user.setId(id);
+            userDao.updateById(user);
+            return 1;
+        }catch (Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    @Override
+    public List<User> queryUsers(String name, Timestamp joinTime, Long roleId) {
+        QueryWrapper<User> wrapper = new QueryWrapper<User>().like(name!=null,"username",name)
+                .gt(joinTime!=null,"join_time",joinTime)
+                .eq(roleId!=null,"role_id",roleId);
+
+        try{
+            return userDao.selectList( wrapper);
+        }catch (Exception e){
+            return null;
+        }
     }
 }

@@ -3,6 +3,7 @@ package com.fan.share.service.user;
 import com.fan.share.dto.UserDTO;
 import com.fan.share.entity.User;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -22,10 +23,16 @@ public interface IUserService {
     //条件筛选用户
     public List<User> selectUsers();
 
-    //新增用户
+    // 新增用户
     public int add(UserDTO userDTO);
 
-    //删除用户
-    public int delete(int id);
+    // 删除用户
+    public int delete(long id);
+
+    // 更新用户
+    public int update(long id,UserDTO userDTO);
+
+    // 条件查询
+    public List<User> queryUsers(String name, Timestamp joinTime,Long roleId);
 
 }
