@@ -15,6 +15,6 @@ public interface IRoleService {
     public List<Role> roles();
 
     // 根据id获取权限
-    public Role selectById(int id);
+    public Role selectById(Long id);
 
 }

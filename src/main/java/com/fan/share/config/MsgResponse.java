@@ -1,5 +1,7 @@
 package com.fan.share.config;
 
+import com.fan.share.constant.HttpResponseStatusEnum;
+
 /**
  * @author fanlu
  * @version 1.0
@@ -102,6 +104,14 @@ public class MsgResponse<T> {
     public static <T> MsgResponse<T> fail(int code,String msg) {
         MsgResponse<T> response = new MsgResponse<T>();
         response.setCode(String.valueOf(code));
+        response.setSuccess(false);
+        response.setMsg(msg);
+        response.setData(null);
+        return response;
+    }
+    //失败返回2
+    public static <T> MsgResponse<T> fail(String msg) {
+        MsgResponse<T> response = new MsgResponse<T>();
         response.setSuccess(false);
         response.setMsg(msg);
         response.setData(null);

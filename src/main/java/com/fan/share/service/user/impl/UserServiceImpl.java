@@ -43,12 +43,21 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public List<User> selectUsers() {
-        return null;
+    public User selectUserByUserName(String username) {
+        QueryWrapper<User> wrapper = new QueryWrapper<User>().eq("username",username);
+        try{
+            return userDao.selectOne(wrapper);
+        }catch (Exception e){
+            return null;
+        }
     }
 
     @Override
     public int add(UserDTO userDTO) {
+        String username = userDTO.getUsername();
+        if(exist(username)){
+            throw new RuntimeException("用户名已存在！");
+        }
         try{
             userDao.insert(userDTO.toUser());
         }catch (Exception e){
@@ -94,4 +103,24 @@ public class UserServiceImpl implements IUserService {
             return null;
         }
     }
+
+    /**
+     * 根据用户名获取用户信息
+     * @param username
+     * @return
+     */
+    @Override
+    public User getByUsername(String username) {
+        return userDao.selectOne(new QueryWrapper<User>().eq(true, "username", username));
+    }
+
+
+    /**
+     * 判断用户是否存在
+     */
+    private boolean exist(String username){
+        int count = userDao.selectCount(new QueryWrapper<User>().eq(true, "username", username));
+        return (count != 0);
+    }
+
 }

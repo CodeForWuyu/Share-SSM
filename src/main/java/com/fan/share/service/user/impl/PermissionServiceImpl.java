@@ -22,8 +22,8 @@ public class PermissionServiceImpl implements IPermissionService {
             return permissionDao.selectList(null);
         }catch (Exception e){
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class PermissionServiceImpl implements IPermissionService {
             return permissionDao.selectById(id);
         }catch (Exception e){
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 }

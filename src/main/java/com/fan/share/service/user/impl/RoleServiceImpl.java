@@ -24,8 +24,8 @@ public class RoleServiceImpl implements IRoleService {
             return roleDao.selectList(null);
         }catch (Exception e){
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class RoleServiceImpl implements IRoleService {
             return roleDao.selectById(id);
         }catch (Exception e){
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 }

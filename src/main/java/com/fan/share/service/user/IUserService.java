@@ -20,8 +20,8 @@ public interface IUserService {
     //根据id获取指定用户
     public User selectUserById(int id);
 
-    //条件筛选用户
-    public List<User> selectUsers();
+    // 按照用户名查询用户
+    public User selectUserByUserName(String username);
 
     // 新增用户
     public int add(UserDTO userDTO);
@@ -34,5 +34,8 @@ public interface IUserService {
 
     // 条件查询
     public List<User> queryUsers(String name, Timestamp joinTime,Long roleId);
+
+    // 根据用户名获取用户信息
+    public User getByUsername(String username);
 
 }
