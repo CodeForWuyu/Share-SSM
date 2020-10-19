@@ -23,6 +23,6 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         httpServletResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
         httpServletResponse.setCharacterEncoding(StandardCharsets.UTF_8.toString());
-        httpServletResponse.getWriter().write(JSON.toJSONString(MsgResponse.forbidden()));
+        httpServletResponse.getWriter().write(JSON.toJSONString(MsgResponse.fail("没有访问权限")));
     }
 }

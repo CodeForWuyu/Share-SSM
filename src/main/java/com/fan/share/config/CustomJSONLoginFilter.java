@@ -15,6 +15,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -87,10 +89,14 @@ public class CustomJSONLoginFilter extends AbstractAuthenticationProcessingFilte
         System.out.println(username);
         System.out.println(password);
         User user = userService.getByUsername(username);
+
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodePassword = passwordEncoder.encode(password);
+
         if (user == null){
             throw new UsernameNotFoundException("user not exist");
         }
-        if(!user.getPassword().equals(password)){
+        if(!user.getPassword().equals(encodePassword)){
             throw new AuthenticationServiceException("error username or password");
         }
     }

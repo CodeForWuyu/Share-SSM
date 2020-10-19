@@ -22,7 +22,7 @@ public class Book {
     private Long countryId;
     // 出版社
     private String press;
-    // 初版时间
+    // 初版时间               
     private Timestamp pressTime;
     // 价格
     private Double price;

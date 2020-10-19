@@ -7,6 +7,8 @@ import com.fan.share.dto.UserDTO;
 import com.fan.share.entity.User;
 import com.fan.share.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -26,7 +28,10 @@ public class UserServiceImpl implements IUserService {
     @Override
     public List<User> users() {
         try{
-            return userDao.selectList( null);
+            System.out.println("查询指定字段");
+            QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+            queryWrapper.select(User.class, info -> !info.getColumn().equals("password"));
+            return userDao.selectList( queryWrapper);
         }catch (Exception e){
             return null;
         }
@@ -58,6 +63,11 @@ public class UserServiceImpl implements IUserService {
         if(exist(username)){
             throw new RuntimeException("用户名已存在！");
         }
+
+        // 密码加密
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+
         try{
             userDao.insert(userDTO.toUser());
         }catch (Exception e){

@@ -29,7 +29,7 @@ public class RoleServiceImpl implements IRoleService {
     }
 
     @Override
-    public Role selectById(int id) {
+    public Role selectById(Long id) {
         try{
             return roleDao.selectById(id);
         }catch (Exception e){

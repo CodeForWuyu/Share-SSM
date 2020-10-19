@@ -5,10 +5,13 @@ import com.fan.share.dto.UserDTO;
 import com.fan.share.entity.User;
 import com.fan.share.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**登陆注册接口
  * @author fanlu
@@ -26,10 +29,11 @@ public class LoginController {
      * @return
      */
     @PostMapping("/register")
+    @ResponseBody
     public MsgResponse<String> register(@RequestBody UserDTO userDTO){
         //检查用户名是否为空
-        if(userDTO.getUsername()==null){
-            return MsgResponse.fail("用户名不能为空!");
+        if(userDTO.getUsername()==null || userDTO.getPassword()==null){
+            return MsgResponse.fail("用户名和密码不能为空!");
         }
 
         // 检查用户名是否存在
@@ -50,6 +54,7 @@ public class LoginController {
      * @return
      */
     @PostMapping("/login")
+    @ResponseBody
     public MsgResponse<String> login(@RequestBody UserDTO userDTO){
         // 检查用户名和密码是否为空
         if(userDTO.getUsername()==null || userDTO.getPassword()==null){
@@ -63,8 +68,9 @@ public class LoginController {
         }
 
         // 用户名与密码验证
-        //TODO 密码加密过程
-        if(user.getPassword().equals(userDTO.getPassword())){
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+        if(!passwordEncoder.matches(userDTO.getPassword(),user.getPassword())){
             return MsgResponse.fail("用户名或密码错误!");
         }
 
